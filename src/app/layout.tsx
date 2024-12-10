@@ -3,6 +3,7 @@ import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import "@/styles/globals.css";
 import { ThemeProvider } from "./theme-provider";
+import NavBar from "@/components/navbar";
 
 export const metadata: Metadata = {
   title: {
@@ -23,13 +24,14 @@ export default function RootLayout({ children }: Readonly<LayoutProps>) {
       className={`${GeistSans.variable} ${GeistMono.variable}`}
       suppressHydrationWarning
     >
-      <body className="antialiased font-sans bg-white dark:bg-black">
+      <body className="antialiased font-sans bg-zinc-50 dark:bg-zinc-950">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
+          <NavBar />
           {children}
         </ThemeProvider>
       </body>
