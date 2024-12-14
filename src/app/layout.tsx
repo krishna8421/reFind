@@ -4,14 +4,18 @@ import { GeistMono } from "geist/font/mono";
 import "@/styles/globals.css";
 import { ThemeProvider } from "./theme-provider";
 import NavBar from "@/components/navbar";
+import { Toaster } from "sonner";
+import { SITE_URL } from "@/lib/constant";
+import { createMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createMetadata({
   title: {
     template: "%s | reFind",
-    default: "reFind - A modern link sharing platform for developers",
+    default: "reFind",
   },
   description: "A modern link sharing platform for developers",
-};
+  metadataBase: new URL(SITE_URL),
+});
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -33,6 +37,7 @@ export default function RootLayout({ children }: Readonly<LayoutProps>) {
         >
           <NavBar />
           {children}
+          <Toaster closeButton />
         </ThemeProvider>
       </body>
     </html>
