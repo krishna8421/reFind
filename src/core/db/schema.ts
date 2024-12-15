@@ -7,21 +7,27 @@ export const usersTable = pgTable("users", {
   email: text("email").notNull().unique(),
   emailVerified: boolean("emailVerified").notNull(),
   image: text("image"),
-  createdAt: timestamp("createdAt").notNull(),
-  updatedAt: timestamp("updatedAt").notNull(),
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+  updatedAt: timestamp("updatedAt")
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
 });
 
 export const sessionsTable = pgTable("sessions", {
   id: text("id").$defaultFn(createId).primaryKey(),
   expiresAt: timestamp("expiresAt").notNull(),
   token: text("token").notNull().unique(),
-  createdAt: timestamp("createdAt").notNull(),
-  updatedAt: timestamp("updatedAt").notNull(),
   ipAddress: text("ipAddress"),
   userAgent: text("userAgent"),
   userId: text("userId")
     .notNull()
     .references(() => usersTable.id),
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+  updatedAt: timestamp("updatedAt")
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
 });
 
 export const accountsTable = pgTable("accounts", {
@@ -38,8 +44,11 @@ export const accountsTable = pgTable("accounts", {
   refreshTokenExpiresAt: timestamp("refreshTokenExpiresAt"),
   scope: text("scope"),
   password: text("password"),
-  createdAt: timestamp("createdAt").notNull(),
-  updatedAt: timestamp("updatedAt").notNull(),
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+  updatedAt: timestamp("updatedAt")
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
 });
 
 export const verificationsTable = pgTable("verifications", {
@@ -47,6 +56,9 @@ export const verificationsTable = pgTable("verifications", {
   identifier: text("identifier").notNull(),
   value: text("value").notNull(),
   expiresAt: timestamp("expiresAt").notNull(),
-  createdAt: timestamp("createdAt"),
-  updatedAt: timestamp("updatedAt"),
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+  updatedAt: timestamp("updatedAt")
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
 });
