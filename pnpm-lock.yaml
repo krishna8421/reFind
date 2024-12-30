@@ -32,6 +32,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      drizzle-dbml-generator:
+        specifier: ^0.10.0
+        version: 0.10.0(drizzle-orm@0.38.0(@neondatabase/serverless@0.10.4)(@types/pg@8.11.6)(@types/react@19.0.1)(kysely@0.27.5)(react@19.0.0))
       drizzle-orm:
         specifier: ^0.38.0
         version: 0.38.0(@neondatabase/serverless@0.10.4)(@types/pg@8.11.6)(@types/react@19.0.1)(kysely@0.27.5)(react@19.0.0)
@@ -1653,6 +1656,11 @@ packages:
   dotenv@16.4.7:
     resolution: {integrity: sha512-47qPchRCykZC03FhkYAhrvwU4xDBFIj1QPqaarj6mdM/hgUzfPHcpkHJOn3mJAufFeeAxAzeGsr5X0M4k6fLZQ==}
     engines: {node: '>=12'}
+
+  drizzle-dbml-generator@0.10.0:
+    resolution: {integrity: sha512-cMZq9E3U3RlmE0uBeXyc6oWJ0royOkC6HiTlc9LDeMe+W87poZTzKoNYUyAxZrs4Q1RQtob+cGKiefV4ZoI8HA==}
+    peerDependencies:
+      drizzle-orm: '>=0.36.0'
 
   drizzle-kit@0.30.0:
     resolution: {integrity: sha512-zAf0qg/BX2lV/Xip4igXrtbDv+Ub8S39U6qSOEGNvqcHrnmaQjS4mkkFZOUsgXRbuH56QUeWZxfnLHefrKCV5g==}
@@ -4307,6 +4315,10 @@ snapshots:
       esutils: 2.0.3
 
   dotenv@16.4.7: {}
+
+  drizzle-dbml-generator@0.10.0(drizzle-orm@0.38.0(@neondatabase/serverless@0.10.4)(@types/pg@8.11.6)(@types/react@19.0.1)(kysely@0.27.5)(react@19.0.0)):
+    dependencies:
+      drizzle-orm: 0.38.0(@neondatabase/serverless@0.10.4)(@types/pg@8.11.6)(@types/react@19.0.1)(kysely@0.27.5)(react@19.0.0)
 
   drizzle-kit@0.30.0:
     dependencies:
