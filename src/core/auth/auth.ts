@@ -24,10 +24,20 @@ export const auth = betterAuth({
     github: {
       clientId: process.env.GITHUB_CLIENT_ID!,
       clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+      mapProfileToUser: (profile) => {
+        return {
+          username: profile.email.split("@").join("-").split(".").join("-"),
+        };
+      },
     },
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID || "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
+      mapProfileToUser: (profile) => {
+        return {
+          username: profile.email.split("@").join("-").split(".").join("-"),
+        };
+      },
     },
   },
   advanced: {
@@ -35,8 +45,15 @@ export const auth = betterAuth({
     generateId: false,
   },
   user: {
-    deleteUser: {
-      enabled: true,
+    // deleteUser: {
+    //   enabled: true,
+    // },
+    additionalFields: {
+      username: {
+        type: "string",
+        required: true,
+        unique: true,
+      },
     },
   },
   account: {

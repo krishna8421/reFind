@@ -1,6 +1,8 @@
 import { SITE_URL } from "@/lib/constant";
 import { createAuthClient } from "better-auth/react";
+import { inferAdditionalFields } from "better-auth/client/plugins";
 import { toast } from "sonner";
+import type { auth } from "./auth";
 
 export const {
   signIn,
@@ -12,6 +14,7 @@ export const {
   listAccounts,
 } = createAuthClient({
   baseURL: SITE_URL,
+  plugins: [inferAdditionalFields<typeof auth>()],
   fetchOptions: {
     onError(e) {
       if (e.error.status === 429) {
