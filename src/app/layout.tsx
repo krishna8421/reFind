@@ -20,7 +20,7 @@ export const metadata: Metadata = createMetadata({
 });
 
 export const viewport: Viewport = {
-  themeColor: "#1A1C28",
+  themeColor: tailwindConfig.theme.extend.colors.primary.background,
 };
 
 type LayoutProps = {

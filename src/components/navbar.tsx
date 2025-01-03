@@ -1,8 +1,5 @@
 import React from "react";
 import Link from "next/link";
-import { Button } from "./ui/button";
-import { LogIn } from "lucide-react";
-import LoginButton from "./auth/login-button";
 import NavBarOptions from "./navbar-options";
 
 const NavBar = () => {
