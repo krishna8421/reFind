@@ -1,6 +1,7 @@
-import { betterAuth } from "better-auth";
+import { betterAuth, BetterAuthOptions } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "@/core/db";
+import { openAPI } from "better-auth/plugins";
 import {
   sessionsTable,
   usersTable,
@@ -61,4 +62,5 @@ export const auth = betterAuth({
       trustedProviders: ["google", "github"],
     },
   },
-});
+  plugins: [openAPI()],
+} satisfies BetterAuthOptions);

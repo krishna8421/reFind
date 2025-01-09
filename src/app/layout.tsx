@@ -3,7 +3,7 @@ import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import { Pixelify_Sans } from "next/font/google";
 import "@/styles/globals.css";
-import NavBar from "@/components/navbar";
+import NavBar from "@/components/navbar/navbar";
 import { Toaster } from "sonner";
 import { SITE_URL } from "@/lib/constant";
 import { createMetadata } from "@/lib/metadata";

@@ -1,0 +1,1 @@
+export const GITHUB_URL =  "https://github.com/krishna8421/refind.delivr.tech";

@@ -1,6 +1,5 @@
-import React from "react";
 import Link from "next/link";
-import NavBarOptions from "./navbar/navbar-options";
+import NavBarOptions from "./navbar-options";
 
 const NavBar = () => {
   return (
