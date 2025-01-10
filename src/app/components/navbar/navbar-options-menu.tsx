@@ -1,5 +1,5 @@
 import React from "react";
-import { CloudIcon, LogOutIcon, SettingsIcon, UserIcon } from "lucide-react";
+import { CloudIcon, SettingsIcon, UserIcon } from "lucide-react";
 import { LuGithub } from "react-icons/lu";
 
 import {
@@ -10,7 +10,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/app/components/ui/dropdown-menu";
 import Image from "next/image";
 import Link from "next/link";
 import { GITHUB_URL } from "@/constants/site";

@@ -2,7 +2,6 @@
 
 import { useSession } from "@/core/auth/client";
 import LoginButton from "../auth/login-button";
-import Image from "next/image";
 import NavBarOptionsMenu from "./navbar-options-menu";
 
 const NavBarOptions = () => {
