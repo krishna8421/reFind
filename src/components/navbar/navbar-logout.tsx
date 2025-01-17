@@ -1,7 +1,7 @@
 "use client";
 
 import { LogOutIcon } from "lucide-react";
-import { DropdownMenuItem } from "@/app/components/ui/dropdown-menu";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { signOut } from "@/core/auth/client";
 
 const NavBarLogout = () => {

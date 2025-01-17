@@ -3,7 +3,7 @@ import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import { Pixelify_Sans } from "next/font/google";
 import "@/styles/globals.css";
-import NavBar from "@/app/components/navbar/navbar";
+import NavBar from "@/components/navbar/navbar";
 import { Toaster } from "sonner";
 import { SITE_URL } from "@/lib/constant";
 import { createMetadata } from "@/lib/metadata";
@@ -40,7 +40,7 @@ export default function RootLayout({ children }: Readonly<LayoutProps>) {
     >
       <body className="antialiased font-mono bg-primary-background text-zinc-50 min-h-[200rem]">
         <NavBar />
-        <main className="mt-24">{children}</main>
+        <main className="pt-24">{children}</main>
         <Toaster closeButton />
       </body>
     </html>

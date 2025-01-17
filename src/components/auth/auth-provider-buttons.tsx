@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/app/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { IoLogoGithub, IoLogoGoogle } from "react-icons/io5";
 import { signIn } from "@/core/auth/client";
 
