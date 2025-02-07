@@ -1,25 +1,16 @@
 import { betterAuth, BetterAuthOptions } from "better-auth";
-import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { prismaAdapter } from "better-auth/adapters/prisma";
 import { db } from "@/core/db";
 import { openAPI } from "better-auth/plugins";
-import {
-  sessionsTable,
-  usersTable,
-  accountsTable,
-  verificationsTable,
-} from "@/core/db/schema";
+
+const emailToUsername = (email: string) => {
+  return email.split("@").join("-").split(".").join("-");
+};
 
 export const auth = betterAuth({
   appName: "reFind",
-  database: drizzleAdapter(db, {
-    provider: "pg",
-    schema: {
-      users: usersTable,
-      sessions: sessionsTable,
-      accounts: accountsTable,
-      verifications: verificationsTable,
-    },
-    usePlural: true,
+  database: prismaAdapter(db, {
+    provider: "sqlite",
   }),
   socialProviders: {
     github: {
@@ -27,7 +18,7 @@ export const auth = betterAuth({
       clientSecret: process.env.GITHUB_CLIENT_SECRET!,
       mapProfileToUser: (profile) => {
         return {
-          username: profile.email.split("@").join("-").split(".").join("-"),
+          username: emailToUsername(profile.email),
         };
       },
     },
@@ -36,7 +27,7 @@ export const auth = betterAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
       mapProfileToUser: (profile) => {
         return {
-          username: profile.email.split("@").join("-").split(".").join("-"),
+          username: emailToUsername(profile.email),
         };
       },
     },
@@ -46,9 +37,9 @@ export const auth = betterAuth({
     generateId: false,
   },
   user: {
-    // deleteUser: {
-    //   enabled: true,
-    // },
+    deleteUser: {
+      enabled: false,
+    },
     additionalFields: {
       username: {
         type: "string",
