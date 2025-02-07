@@ -1,0 +1,284 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String   @id @default(ulid())
+  name          String
+  email         String   @unique
+  username      String   @unique
+  emailVerified Boolean
+  image         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  accounts       Account[]
+  sessions       Session[]
+  stacks         Stack[]
+  likes          SiteLike[]
+  savedStacks    SavedStack[]
+  Report         Report[]
+  Activity       Activity[]
+  UserPreference UserPreference?
+
+  @@index([email])
+  @@index([username])
+  @@map("user")
+}
+
+model UserPreference {
+  id             String   @id @default(ulid())
+  userId         String   @unique
+  // more fields to be added
+  defaultStackId String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_preferences")
+}
+
+model Session {
+  id        String   @id @default(ulid())
+  expiresAt DateTime
+  token     String   @unique
+  ipAddress String?
+  userAgent String?
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id @default(ulid())
+  accountId             String
+  providerId            String
+  userId                String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id @default(ulid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("verification")
+}
+
+model Domain {
+  id        String   @id @default(ulid())
+  name      String   @unique // "github.com", "vercel.com", "ui.shadcn.com"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  sites Site[]
+
+  @@index([name])
+  @@map("domain")
+}
+
+model DomainBlacklist {
+  id        String   @id @default(ulid())
+  domain    String   @unique
+  reason    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([domain])
+  @@map("domain_blacklist")
+}
+
+enum SiteStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
+
+model Site {
+  id            String     @id @default(ulid())
+  path          String // e.g., "/", "/blog", "/docs"
+  title         String?
+  description   String?    @db.Text
+  screenshotUrl String?
+  metadata      Json?
+  status        SiteStatus @default(PENDING)
+  isActive      Boolean    @default(true)
+  domainId      String
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  domain Domain      @relation(fields: [domainId], references: [id])
+  stacks StackSite[]
+  likes  SiteLike[]
+  tags   SiteTag[]
+
+  @@unique([domainId, path]) // unique path per domain
+  @@index([domainId])
+  @@map("site")
+}
+
+model Stack {
+  id          String   @id @default(ulid())
+  name        String
+  description String?  @db.Text
+  isPublic    Boolean  @default(false)
+  isDefault   Boolean  @default(false)
+  userId      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user    User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sites   StackSite[]
+  savedBy SavedStack[]
+
+  @@unique([userId, name])
+  @@index([userId])
+  @@index([isPublic])
+  @@map("stack")
+}
+
+model StackSite {
+  id      String   @id @default(ulid())
+  stackId String
+  siteId  String
+  addedAt DateTime @default(now())
+
+  stack Stack @relation(fields: [stackId], references: [id], onDelete: Cascade)
+  site  Site  @relation(fields: [siteId], references: [id], onDelete: Cascade)
+
+  @@unique([stackId, siteId])
+  @@index([stackId])
+  @@index([siteId])
+  @@map("stack_site")
+}
+
+model SavedStack {
+  id      String   @id @default(ulid())
+  userId  String
+  stackId String
+  savedAt DateTime @default(now())
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stack Stack @relation(fields: [stackId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, stackId])
+  @@index([userId])
+  @@index([stackId])
+  @@map("saved_stack")
+}
+
+model SiteLike {
+  id      String   @id @default(ulid())
+  userId  String
+  siteId  String
+  likedAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  site Site @relation(fields: [siteId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, siteId])
+  @@index([userId])
+  @@index([siteId])
+  @@map("site_like")
+}
+
+model Tag {
+  id        String   @id @default(ulid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+
+  sites SiteTag[]
+
+  @@index([name])
+  @@map("tag")
+}
+
+model SiteTag {
+  id     String @id @default(ulid())
+  siteId String
+  tagId  String
+
+  site Site @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  tag  Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([siteId, tagId])
+  @@index([siteId])
+  @@index([tagId])
+  @@map("site_tag")
+}
+
+model Activity {
+  id        String       @id @default(ulid())
+  userId    String
+  type      ActivityType
+  metadata  Json
+  createdAt DateTime     @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([createdAt])
+  @@map("activity")
+}
+
+enum ActivityType {
+  CREATED_STACK
+  SAVED_STACK
+  LIKED_SITE
+  ADDED_NEW_SITE
+  ADDED_SITE_TO_STACK
+}
+
+model Report {
+  id         String       @id @default(ulid())
+  type       ReportType
+  reason     String
+  details    String?      @db.Text
+  status     ReportStatus @default(PENDING)
+  reporterId String
+  targetId   String
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+
+  reporter User @relation(fields: [reporterId], references: [id])
+
+  @@index([status])
+  @@map("report")
+}
+
+enum ReportType {
+  SITE
+  STACK
+  USER
+}
+
+enum ReportStatus {
+  PENDING
+  RESOLVED
+  REJECTED
+}
